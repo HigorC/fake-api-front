@@ -1,13 +1,21 @@
 <template>
   <div id="app">
-    Works
+    <Header/>
+    <Cadastro/>
   </div>
 </template>
 
 <script>
 
+import Header from "./components/Header";
+import Cadastro from "./components/Cadastro";
+
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    Header,
+    Cadastro
+  },
 } 
 </script>
 
@@ -18,6 +26,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  /* margin-top: 60px; */
 }
 </style>
