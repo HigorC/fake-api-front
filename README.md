@@ -1,29 +1,15 @@
-# fake-api-front
+# Fake API (Front-end)
 
-## Project setup
+Repositório responsável por armazenar o front-end da aplicação. 
+
+Construindo utilizando Vue.js.
+
+### Instalação
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Para rodar
 ```
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
