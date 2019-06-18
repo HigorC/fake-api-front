@@ -1,31 +1,24 @@
 <template>
-  <div class="cadastro">
-    <b-form-input v-model="rota" placeholder="Qual rota deseja criar?"></b-form-input>
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-4">
+        <b-field>
+          <b-input expanded placeholder="Qual rota deseja criar?" v-model="rota"></b-input>
+        </b-field>
 
-    <b-form-textarea
-      id="textarea"
-      v-model="retorno"
-      placeholder="Qual o retorno desejado?"
-      rows="9"
-    ></b-form-textarea>
+        <b-field>
+          <b-input
+            v-model="retorno"
+            placeholder="Qual o retorno desejado? (JSON)"
+            rows="15"
+            type="textarea"
+          ></b-input>
+        </b-field>
 
-    <button class="btn btn-block btn-success btn-criar" @click="criarApi()">Criar API Fake!</button>
-
-    <b-modal
-      ref="modal-sucesso"
-      id="modal-1"
-      title="API Fake criada com sucesso!"
-      modal-cancel="false"
-    >
-      <div class="conteudo-modal">
-        Sua API está pronta para uso.
-        Acesse-a clicando
-        <a
-          target="_blank"
-          :href="linkCriado"
-        >Aqui</a>
+        <b-button class="is-fullwidth" type="is-success" @click="criarApi()">Criar API Fake!</b-button>
       </div>
-    </b-modal>
+    </div>
+    <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="false"></b-loading>
   </div>
 </template>
 
@@ -38,12 +31,14 @@ export default {
     return {
       rota: "",
       retorno: "",
-      linkCriado: ""
+      linkCriado: "",
+       isLoading: false
     };
   },
   methods: {
     criarApi: function() {
       const proxyurl = "https://cors-anywhere.herokuapp.com/";
+      this.isLoading = true;
 
       axios
         .post(
@@ -52,8 +47,17 @@ export default {
         )
         .then(response => {
           if (response.status == 203) {
+            this.isLoading = false;
             this.linkCriado = response.data.rota;
-            this.$refs["modal-sucesso"].show();
+
+            this.$dialog.alert({
+              title: "API Fake criada com sucesso!",
+              type: "is-success",
+              message: ` Sua API está pronta para uso. Acesse-a clicando  <a target='_blank' href=${
+                response.data.rota
+              }>neste link.</a>`,
+              confirmText: "Fechar!"
+            });
           }
           console.log(response);
         });
@@ -62,16 +66,8 @@ export default {
 };
 </script>
 
-<style lang="less">
-.cadastro {
-  padding: 30px 30%;
-
-  #textarea,
-  .btn-criar {
-    margin-top: 10px;
-  }
-  .btn-criar {
-    font-weight: bold;
-  }
+<style scoped lang="less">
+.container {
+  margin-top: 30px;
 }
 </style>
