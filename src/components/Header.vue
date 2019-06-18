@@ -14,12 +14,8 @@
         <Cadastro/>
       </b-tab-item>
 
-      <b-tab-item label="Apenas Status">
-        Lorem
-        <br>ipsum
-        <br>dolor
-        <br>sit
-        <br>amet.
+      <b-tab-item label="Códigos de Status">
+        <Status/>
       </b-tab-item>
 
       <b-tab-item label="Prontas">
@@ -35,10 +31,12 @@
 
 <script>
 import Cadastro from "./Cadastro";
+import Status from "./Status";
 
 export default {
   components: {
-    Cadastro
+    Cadastro,
+    Status
   }
 };
 </script>

@@ -2,6 +2,7 @@
   <div id="app">
     <Header/>
     <!-- <Footer/> -->
+     <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="false"></b-loading>
   </div>
 </template>
 
@@ -11,6 +12,11 @@ import Header from "./components/Header";
 
 export default {
   name: "app",
+  data:function(){
+    return {
+      isLoading: false
+    }
+  },
   components: {
     Header
   }

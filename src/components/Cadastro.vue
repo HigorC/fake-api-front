@@ -10,7 +10,7 @@
           <b-input
             v-model="retorno"
             placeholder="Qual o retorno desejado? (JSON)"
-            rows="15"
+            rows="10"
             type="textarea"
           ></b-input>
         </b-field>
@@ -18,7 +18,6 @@
         <b-button class="is-fullwidth" type="is-success" @click="criarApi()">Criar API Fake!</b-button>
       </div>
     </div>
-    <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="false"></b-loading>
   </div>
 </template>
 
@@ -31,8 +30,7 @@ export default {
     return {
       rota: "",
       retorno: "",
-      linkCriado: "",
-       isLoading: false
+      linkCriado: ""
     };
   },
   methods: {
@@ -68,6 +66,5 @@ export default {
 
 <style scoped lang="less">
 .container {
-  margin-top: 30px;
 }
 </style>
