@@ -5,7 +5,6 @@
         <b-field>
           <b-input expanded placeholder="Qual rota deseja criar?" v-model="rota"></b-input>
         </b-field>
-
         <b-field>
           <b-input
             v-model="retorno"
@@ -18,6 +17,7 @@
         <b-button class="is-fullwidth" type="is-success" @click="criarApi()">Criar API Fake!</b-button>
       </div>
     </div>
+     <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="false"></b-loading>
   </div>
 </template>
 
@@ -30,35 +30,69 @@ export default {
     return {
       rota: "",
       retorno: "",
-      linkCriado: ""
+      linkCriado: "",
+      isLoading: false
     };
   },
   methods: {
     criarApi: function() {
+      if (
+        !this.rota ||
+        this.rota.trim() == "" ||
+        !this.retorno ||
+        this.retorno.trim() == ""
+      ) {
+        this.$toast.open({
+          duration: 3000,
+          message: `Informe valores válidos para criar sua API`,
+          position: "is-top-right",
+          type: "is-danger"
+        });
+        return;
+      }
+
       const proxyurl = "https://cors-anywhere.herokuapp.com/";
       this.isLoading = true;
 
-      axios
-        .post(
-          `${proxyurl}https://fake-api-back.herokuapp.com/new/${this.rota}`,
-          JSON.parse(this.retorno)
-        )
-        .then(response => {
-          if (response.status == 203) {
-            this.isLoading = false;
-            this.linkCriado = response.data.rota;
+      try {
+        axios
+          .post(
+            `${proxyurl}https://fake-api-back.herokuapp.com/new/${this.rota}`,
+            JSON.parse(this.retorno)
+          )
+          .then(response => {
+            if (response.status == 203) {
+              this.isLoading = false;
+              this.linkCriado = response.data.rota;
 
-            this.$dialog.alert({
-              title: "API Fake criada com sucesso!",
-              type: "is-success",
-              message: ` Sua API está pronta para uso. Acesse-a clicando  <a target='_blank' href=${
-                response.data.rota
-              }>neste link.</a>`,
-              confirmText: "Fechar!"
+              this.$dialog.alert({
+                title: "API Fake criada com sucesso!",
+                type: "is-success",
+                message: ` Sua API está pronta para uso. Acesse-a clicando  <a target='_blank' href=${
+                  response.data.rota
+                }>neste link.</a>`,
+                confirmText: "Fechar!"
+              });
+            }
+          })
+          .catch(err => {
+            this.$toast.open({
+              duration: 3000,
+              message: err,
+              position: "is-top-right",
+              type: "is-danger"
             });
-          }
-          console.log(response);
+            this.isLoading = false;
+          });
+      } catch (e) {
+        this.$toast.open({
+          duration: 3000,
+          message: e,
+          position: "is-top-right",
+          type: "is-danger"
         });
+        this.isLoading = false;
+      }
     }
   }
 };

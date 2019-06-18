@@ -34,8 +34,7 @@ export default {
     };
   },
   created: function() {
-
-  this.isLoading = true;
+    this.isLoading = true;
 
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
     axios
@@ -91,7 +90,7 @@ export default {
     margin-bottom: 5px;
     cursor: pointer;
 
-    &:hover{
+    &:hover {
       filter: brightness(110%);
     }
   }
