@@ -3,27 +3,25 @@
     <section class="hero is-primary">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title">FAKE API</h1>
-          <h2 class="subtitle">Dados fakes, requisições reais</h2>
+          <a href=".">
+            <h1 class="title">FAKE API</h1>
+            <h2 class="subtitle">Dados fakes, requisições reais</h2>
+          </a>
         </div>
       </div>
     </section>
 
     <b-tabs position="is-centered" class="block">
-      <b-tab-item label="Criar" >
+      <b-tab-item label="Criar">
         <Cadastro/>
+      </b-tab-item>
+
+      <b-tab-item label="Modelos">
+        <Modelos/>
       </b-tab-item>
 
       <b-tab-item label="Códigos de Status">
         <Status/>
-      </b-tab-item>
-
-      <b-tab-item label="Prontas">
-        Lorem
-        <br>ipsum
-        <br>dolor
-        <br>sit
-        <br>amet.
       </b-tab-item>
     </b-tabs>
   </div>
@@ -32,11 +30,13 @@
 <script>
 import Cadastro from "./Cadastro";
 import Status from "./Status";
+import Modelos from "./Modelos";
 
 export default {
   components: {
     Cadastro,
-    Status
+    Status,
+    Modelos
   }
 };
 </script>
