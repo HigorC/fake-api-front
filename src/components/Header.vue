@@ -43,7 +43,8 @@ export default {
 
 <style scoped lang="less">
 .hero {
-  background-color: #4529b3 !important;
+  background-image: linear-gradient(to left, #6b4aec, #167df0);
+
   .title {
     letter-spacing: -1px;
   }
