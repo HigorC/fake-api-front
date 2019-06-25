@@ -18,6 +18,11 @@
             <b-tag class="status" :type="definirCorStatus(status)" size="is-medium">{{status}}</b-tag>
           </a>
         </div>
+
+        <!-- <b-field label="Delay na resposta">
+          <b-numberinput v-model="info.delay" min="0"></b-numberinput>
+        </b-field> -->
+
       </div>
     </div>
     <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="false"></b-loading>
@@ -30,6 +35,7 @@ export default {
   data: function() {
     return {
       statusCodes: [],
+      info: {},
       pesquisa: ""
     };
   },
@@ -48,33 +54,18 @@ export default {
     isStatusOnSearch: function(status) {
       return status.toString().includes(this.pesquisa);
     },
-    callStatusApi: function(status) {
-      const proxyurl = "https://cors-anywhere.herokuapp.com/";
-      axios
-        .get(
-          `${proxyurl}https://fake-api-back.herokuapp.com/api/status/${status}`
-        )
-        .then(response => {
-          this.statusCodes = response.data;
-        });
-    },
     definirCorStatus: function(status) {
       switch (status.toString()[0]) {
         case "1":
           return "is-ligth";
-          break;
         case "2":
           return "is-success";
-          break;
         case "3":
           return "is-info";
-          break;
         case "4":
           return "is-danger";
-          break;
         case "5":
           return "is-warning";
-          break;
       }
     }
   }
