@@ -1,10 +1,16 @@
 <template>
   <div class="container">
-    <div class="columns is-centered">
+    <div class="columns">
+      <div class="column is-4">Exemplo 1</div>
       <div class="column is-4">
         <b-field>
           <b-input expanded placeholder="Qual rota deseja criar?" v-model="rota"></b-input>
         </b-field>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-4 is-offset-4">
         <b-field>
           <b-input
             v-model="retorno"
@@ -13,11 +19,11 @@
             type="textarea"
           ></b-input>
         </b-field>
-
         <b-button class="is-fullwidth" type="is-success" @click="criarApi()">Criar API Fake!</b-button>
       </div>
+      <div class="column is-4">Exemplo 2</div>
     </div>
-     <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="false"></b-loading>
+    <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="false"></b-loading>
   </div>
 </template>
 
