@@ -1,8 +1,7 @@
 <template>
   <div class="container">
     <div class="columns">
-      <div class="column is-4">Exemplo 1</div>
-      <div class="column is-4">
+      <div class="column is-4 is-offset-4">
         <b-field>
           <b-input expanded placeholder="Qual rota deseja criar?" v-model="rota"></b-input>
         </b-field>
@@ -11,17 +10,22 @@
 
     <div class="columns">
       <div class="column is-4 is-offset-4">
-        <b-field>
-          <b-input
-            v-model="retorno"
-            placeholder="Qual o retorno desejado? (JSON)"
-            rows="10"
-            type="textarea"
-          ></b-input>
-        </b-field>
-        <b-button class="is-fullwidth" type="is-success" @click="criarApi()">Criar API Fake!</b-button>
+        <div id="editor"></div>
+
+        <b-tooltip class="tooltip"
+          label="Insira um JSON válido"
+          position="is-bottom"
+          :active="!isJsonValido"
+          animated
+        >
+          <b-button
+            :disabled="!isJsonValido"
+            class="is-fullwidth"
+            type="is-success"
+            @click="criarApi()"
+          >Criar API Fake!</b-button>
+        </b-tooltip>
       </div>
-      <div class="column is-4">Exemplo 2</div>
     </div>
     <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="false"></b-loading>
   </div>
@@ -30,6 +34,10 @@
 <script>
 import axios from "axios";
 
+import ace from "ace-builds";
+
+import "ace-builds/webpack-resolver";
+
 export default {
   name: "Cadastro",
   data: function() {
@@ -37,10 +45,30 @@ export default {
       rota: "",
       retorno: "",
       linkCriado: "",
-      isLoading: false
+      isLoading: false,
+      editor: null,
+      isJsonValido: false
     };
   },
+  created: function() {},
+  mounted: function() {
+    this.editor = ace.edit("editor");
+
+    this.editor.session.setMode("ace/mode/javascript");
+
+    this.editor.session.on("change", delta => {
+      this.isJson(this.editor.getValue());
+    });
+  },
   methods: {
+    isJson(str) {
+      try {
+        var json = JSON.parse(str);
+        this.isJsonValido = typeof json === "object";
+      } catch (e) {
+        this.isJsonValido = false;
+      }
+    },
     criarApi: function() {
       if (
         !this.rota ||
@@ -74,9 +102,7 @@ export default {
               this.$dialog.alert({
                 title: "API Fake criada com sucesso!",
                 type: "is-success",
-                message: ` Sua API está pronta para uso. Acesse-a clicando  <a target='_blank' href=${
-                  response.data.rota
-                }>neste link.</a>`,
+                message: ` Sua API está pronta para uso. Acesse-a clicando  <a target='_blank' href=${response.data.rota}>neste link.</a>`,
                 confirmText: "Fechar!"
               });
             }
@@ -105,6 +131,16 @@ export default {
 </script>
 
 <style scoped lang="less">
-.container {
+
+.tooltip{
+  display: inherit;
+}
+
+#editor {
+  width: 100%;
+  height: 200px;
+
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
 }
 </style>
