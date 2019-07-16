@@ -44,7 +44,7 @@ export default {
 
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
     axios
-      .get(`${proxyurl}https://fake-api-back.herokuapp.com/api/status`)
+      .get(`${proxyurl}https://fake-api-back.herokuapp.com/api/juststatus/allstatus`)
       .then(response => {
         this.isLoading = false;
         this.statusCodes = response.data;

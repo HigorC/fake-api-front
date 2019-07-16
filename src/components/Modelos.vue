@@ -12,7 +12,20 @@
           <b-numberinput v-model="info.quantidade" min="1"></b-numberinput>
         </b-field>
 
-        <b-button class="is-fullwidth" type="is-success" @click="criarApi()">Criar API Fake!</b-button>
+        <b-tooltip
+          class="tooltip"
+          label="Selecione um modelo"
+          position="is-bottom"
+          :active="!info.tipo"
+          animated
+        >
+          <b-button
+            :disabled="!info.tipo"
+            class="is-fullwidth"
+            type="is-success"
+            @click="criarApi()"
+          >Criar API Fake!</b-button>
+        </b-tooltip>
       </div>
     </div>
     <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="false"></b-loading>
@@ -37,7 +50,9 @@ export default {
 
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
     axios
-      .get(`${proxyurl}https://fake-api-back.herokuapp.com/api/modelos`)
+      .get(
+        `${proxyurl}https://fake-api-back.herokuapp.com/api/models/allmodels`
+      )
       .then(response => {
         this.isLoading = false;
         this.modelos = response.data;
@@ -48,9 +63,7 @@ export default {
       this.$dialog.alert({
         title: "API Fake criada com sucesso!",
         type: "is-success",
-        message: ` Sua API está pronta para uso. Acesse-a clicando  <a target='_blank' href=https://fake-api-back.herokuapp.com/api/models/${
-          this.info.tipo
-        }?size=${this.info.quantidade}>neste link.</a>`,
+        message: ` Sua API está pronta para uso. Acesse-a clicando  <a target='_blank' href=https://fake-api-back.herokuapp.com/api/models?model=${this.info.tipo}&size=${this.info.quantidade}>neste link.</a>`,
         confirmText: "Fechar!"
       });
     }
@@ -58,5 +71,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang="less">
+.tooltip {
+  display: inherit;
+}
 </style>
