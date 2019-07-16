@@ -7,12 +7,13 @@
         </b-field>
       </div>
     </div>
-
+    
     <div class="columns">
       <div class="column is-4 is-offset-4">
         <div id="editor"></div>
 
-        <b-tooltip class="tooltip"
+        <b-tooltip
+          class="tooltip"
           label="Insira um JSON válido"
           position="is-bottom"
           :active="!isJsonValido"
@@ -57,11 +58,11 @@ export default {
     this.editor.session.setMode("ace/mode/javascript");
 
     this.editor.session.on("change", delta => {
-      this.isJson(this.editor.getValue());
+      this.validateJson(this.editor.getValue());
     });
   },
   methods: {
-    isJson(str) {
+    validateJson(str) {
       try {
         var json = JSON.parse(str);
         this.isJsonValido = typeof json === "object";
@@ -70,6 +71,8 @@ export default {
       }
     },
     criarApi: function() {
+      this.retorno = this.editor.getValue();
+
       if (
         !this.rota ||
         this.rota.trim() == "" ||
@@ -131,8 +134,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-
-.tooltip{
+.tooltip {
   display: inherit;
 }
 
