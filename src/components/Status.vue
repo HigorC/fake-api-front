@@ -8,21 +8,21 @@
           type="search"
           icon="magnify"
         ></b-input>
+        <hr>
+        <b-field label="Delay na resposta (em segundos)">
+          <b-numberinput v-model="delay" min="0"></b-numberinput>
+        </b-field>
+        <hr>
         <div class="all-status">
           <a
             target="_blank"
             v-for="status in statusCodes"
             v-show="isStatusOnSearch(status)"
-            :href="'https://fake-api-back.herokuapp.com/api/juststatus/'+status"
+            :href="'https://fake-api-back.herokuapp.com/api/juststatus?status=' + status + '&requesttime=' + (delay * 1000)"
           >
             <b-tag class="status" :type="definirCorStatus(status)" size="is-medium">{{status}}</b-tag>
           </a>
         </div>
-
-        <!-- <b-field label="Delay na resposta">
-          <b-numberinput v-model="info.delay" min="0"></b-numberinput>
-        </b-field> -->
-
       </div>
     </div>
     <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="false"></b-loading>
@@ -35,7 +35,7 @@ export default {
   data: function() {
     return {
       statusCodes: [],
-      info: {},
+      delay: 0,
       pesquisa: ""
     };
   },
@@ -44,7 +44,9 @@ export default {
 
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
     axios
-      .get(`${proxyurl}https://fake-api-back.herokuapp.com/api/juststatus/allstatus`)
+      .get(
+        `${proxyurl}https://fake-api-back.herokuapp.com/api/juststatus/allstatus`
+      )
       .then(response => {
         this.isLoading = false;
         this.statusCodes = response.data;
@@ -74,6 +76,7 @@ export default {
 
 <style scoped lang="less">
 .all-status {
+  text-align: center;
   margin-top: 10px;
 
   .status {
