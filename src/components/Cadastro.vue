@@ -2,12 +2,25 @@
   <div class="container">
     <div class="columns">
       <div class="column is-4 is-offset-4">
-        <b-field>
-          <b-input expanded placeholder="Qual rota deseja criar?" v-model="rota"></b-input>
+        <b-field label="Rota">
+          <b-input expanded placeholder="exemplo-pessoa" v-model="rota"></b-input>
         </b-field>
       </div>
     </div>
-    
+
+    <div class="columns">
+      <div class="column is-3 is-offset-4">
+        <b-field label="Quantidade">
+          <b-numberinput controls-position="compact" v-model="quantity" min="1"></b-numberinput>
+        </b-field>
+      </div>
+      <div class="column is-2">
+        <b-field label="Gerar ID">
+          <b-switch v-model="gerarId"  type="is-success"></b-switch>
+        </b-field>
+      </div>
+    </div>
+
     <div class="columns">
       <div class="column is-4 is-offset-4">
         <div id="editor"></div>
@@ -48,7 +61,8 @@ export default {
       linkCriado: "",
       isLoading: false,
       editor: null,
-      isJsonValido: false
+      isJsonValido: false,
+      gerarId: false
     };
   },
   created: function() {},
@@ -86,6 +100,14 @@ export default {
           type: "is-danger"
         });
         return;
+      } else if (!/\w/.test(this.rota)) {
+        this.$toast.open({
+          duration: 3000,
+          message: `A rota não pode conter simbolos como: ?, / e & `,
+          position: "is-top-right",
+          type: "is-danger"
+        });
+        return;
       }
 
       const proxyurl = "https://cors-anywhere.herokuapp.com/";
@@ -94,7 +116,7 @@ export default {
       try {
         axios
           .post(
-            `${proxyurl}https://fake-api-back.herokuapp.com/new/${this.rota}`,
+            `${proxyurl}https://fake-api-back.herokuapp.com/new/${this.rota}?quantity=${this.quantity}&generateid=${this.gerarId}`,
             JSON.parse(this.retorno)
           )
           .then(response => {
